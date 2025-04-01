@@ -95,15 +95,43 @@ begin
 	-- CONCURRENT STATEMENTS ------------------------------------------------------------------------------
 	
 	-- Next State Logic
-  
+    state_proces: process(i_clk)  
+    begin
+        if (rising_edge(i_clk)) then
+            if (i_reset = '1') then 
+                f_Q_next <= s_floor2;
+            else 
+                case f_Q is
+                    when s_floor1 =>
+                        if ((i_up_down = '1') and (i_stop = '0')) then f_Q_next <= s_floor2; end if;   
+                    when s_floor2 => 
+                        if ((i_up_down = '1') and (i_stop = '0')) then f_Q_next <= s_floor3; end if;  
+                        if ((i_up_down = '0') and (i_stop = '0')) then f_Q_next <= s_floor1; end if;
+                    when s_floor3 =>
+                        if ((i_up_down = '1') and (i_stop = '0')) then f_Q_next <= s_floor4; end if;  
+                        if ((i_up_down = '0') and (i_stop = '0')) then f_Q_next <= s_floor2; end if;
+                    when s_floor4 =>
+                        if ((i_up_down = '0') and (i_stop = '0')) then f_Q_next <= s_floor3; end if;                           
+                end case;
+            end if;
+        end if;
+    end process;  
 	-- Output logic
-
+    output_process: process (f_Q)
+    begin
+        case f_Q is
+            when s_floor1 => o_floor <= "0001";
+            when s_floor2 => o_floor <= "0010";
+            when s_floor3  => o_floor <= "0011";
+            when others  => o_floor <= "0100";
+        end case;
+    end process;
 	-------------------------------------------------------------------------------------------------------
 	
 	-- PROCESSES ------------------------------------------------------------------------------------------	
 	
 	-- State register ------------
-	
+	f_Q <= f_Q_next;
 	
 	-------------------------------------------------------------------------------------------------------
 	
