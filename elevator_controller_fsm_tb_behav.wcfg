@@ -11,12 +11,12 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="100000001fs"></ZoomEndTime>
-      <Cursor1Time time="0fs"></Cursor1Time>
+      <ZoomEndTime time="257000001fs"></ZoomEndTime>
+      <Cursor1Time time="300000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="155"></NameColumnWidth>
-      <ValueColumnWidth column_width="181"></ValueColumnWidth>
+      <ValueColumnWidth column_width="177"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="7" />
    <wvobject fp_name="/elevator_controller_fsm_tb/w_clk" type="logic">
@@ -38,6 +38,8 @@
    <wvobject fp_name="/elevator_controller_fsm_tb/w_floor" type="array">
       <obj_property name="ElementShortName">w_floor[3:0]</obj_property>
       <obj_property name="ObjectShortName">w_floor[3:0]</obj_property>
+      <obj_property name="CustomSignalColor">#0000FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/elevator_controller_fsm_tb/k_clk_period" type="other">
       <obj_property name="ElementShortName">k_clk_period</obj_property>
@@ -46,5 +48,7 @@
    <wvobject fp_name="/elevator_controller_fsm_tb/uut_inst/f_Q" type="other">
       <obj_property name="ElementShortName">f_Q</obj_property>
       <obj_property name="ObjectShortName">f_Q</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
 </wave_config>

@@ -95,44 +95,55 @@ begin
 	-- CONCURRENT STATEMENTS ------------------------------------------------------------------------------
 	
 	-- Next State Logic
-    state_proces: process(i_clk)  
-    begin
-        if (rising_edge(i_clk)) then
-            if (i_reset = '1') then 
-                f_Q_next <= s_floor2;
-            else 
-                case f_Q is
-                    when s_floor1 =>
-                        if ((i_up_down = '1') and (i_stop = '0')) then f_Q_next <= s_floor2; end if;   
-                    when s_floor2 => 
-                        if ((i_up_down = '1') and (i_stop = '0')) then f_Q_next <= s_floor3; end if;  
-                        if ((i_up_down = '0') and (i_stop = '0')) then f_Q_next <= s_floor1; end if;
-                    when s_floor3 =>
-                        if ((i_up_down = '1') and (i_stop = '0')) then f_Q_next <= s_floor4; end if;  
-                        if ((i_up_down = '0') and (i_stop = '0')) then f_Q_next <= s_floor2; end if;
-                    when s_floor4 =>
-                        if ((i_up_down = '0') and (i_stop = '0')) then f_Q_next <= s_floor3; end if;                           
-                end case;
-            end if;
-        end if;
-    end process;  
+
+     f_Q_next <= s_floor1 when (f_Q = s_floor1 and (i_up_down = '0') and (i_stop = '0')) or
+                               (f_Q = s_floor2 and (i_up_down = '0') and (i_stop = '0')) or
+                               (f_Q = s_floor1 and  (i_stop = '1')) else
+                 s_floor2 when (f_Q = s_floor1 and (i_up_down = '1') and (i_stop = '0')) or
+                               (f_Q = s_floor3 and (i_up_down = '0') and (i_stop = '0')) or
+                               (f_Q = s_floor2 and  (i_stop = '1')) else
+                 s_floor3 when (f_Q = s_floor2 and (i_up_down = '1') and (i_stop = '0')) or
+                               (f_Q = s_floor4 and (i_up_down = '0') and (i_stop = '0')) or
+                               (f_Q = s_floor3 and  (i_stop = '1')) else
+                 s_floor4 when (f_Q = s_floor3 and (i_up_down = '1') and (i_stop = '0')) or
+                               (f_Q = s_floor4 and (i_up_down = '0') and (i_stop = '0')) or
+                               (f_Q = s_floor4 and (i_stop = '1')) else
+                 s_floor2;
+                               
+     
+
 	-- Output logic
-    output_process: process (f_Q)
-    begin
-        case f_Q is
-            when s_floor1 => o_floor <= "0001";
-            when s_floor2 => o_floor <= "0010";
-            when s_floor3  => o_floor <= "0011";
-            when others  => o_floor <= "0100";
-        end case;
-    end process;
-	-------------------------------------------------------------------------------------------------------
+--    output_process: process (f_Q)
+--    begin
+--        case f_Q is
+--            when s_floor1 => o_floor <= "0001";
+--            when s_floor2 => o_floor <= "0010";
+--            when s_floor3  => o_floor <= "0011";
+--            when others  => o_floor <= "0100";
+--        end case;
+--    end process;
+    
+    
+    o_floor <= "0001" when f_Q = s_floor1 else
+               "0010" when f_Q = s_floor2 else
+               "0011" when f_Q = s_floor3 else
+               "0100";  -- when f_Q = s_floor4
+               
+----------------------------------------;---------------------------
 	
 	-- PROCESSES ------------------------------------------------------------------------------------------	
 	
 	-- State register ------------
-	f_Q <= f_Q_next;
-	
+state_process: process(i_clk)  
+    begin
+        if (rising_edge(i_clk)) then
+            if (i_reset = '1') then 
+                f_Q <= s_floor2;
+            else 
+	            f_Q <= f_Q_next;
+	        end if; 
+        end if;
+    end process;	
 	-------------------------------------------------------------------------------------------------------
 	
 	
